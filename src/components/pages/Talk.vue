@@ -2,9 +2,10 @@
   <div class="talk-wrapper">
     <div class="movie">
       <h2 class="movie__title">
-        <a class="movie__link" href="">インターステラー</a>
+        <a class="movie__link" href="">インターステラー{{ formatTime }}</a>
       </h2>
-      <a class="movie__stop" href="">一時停止する</a>
+      <button v-on:click="start" v-if="!timerOn">Start</button>
+      <button v-on:click="stop" v-if="timerOn">Stop</button>
     </div>
     <div class="talk">
       <div class="talk-slider">
@@ -18,7 +19,8 @@
         ></vue-slider>
       </div>
       <ul class="talk-list">
-        <li class="talk-list__item">マーフ可愛いなぁ</li>
+        <li v-for="talk in talks" class="talk-list__item">{{talk.content}}</li>
+        <!--<li class="talk-list__item">マーフ可愛いなぁ</li>
         <li class="talk-list__item">ドローン ゲットだぜ</li>
         <li class="talk-list__item">捏造...</li>
         <li class="talk-list__item">MRIって大事だよね</li>
@@ -38,13 +40,14 @@
         <li class="talk-list__item">ダメな方のオデッセイ始まった</li>
         <li class="talk-list__item">23年も待ったのに、ロミリー可哀想すぎる</li>
         <li class="talk-list__item">ガルガンチュア果てしなく大きいな</li>
-        <li class="talk-list__item">ユリイカ！！！！！！！！！</li>
+        <li class="talk-list__item">ユリイカ！！！！！！！！！</li>-->
       </ul>
     </div>
   </div>
 </template>
 
 <script>
+  import moment from 'moment'
   import vueSlider from 'vue-slider-component'
   export default {
     components: {
@@ -52,6 +55,44 @@
     },
     data () {
       return {
+        hour: 0,
+        min: 0,
+        sec: 0,
+        timerOn: false,
+        timerObj: null,
+        cats: ['Norwegian Forest Cat','Maine Coon','Munchkin'],
+        talks: {
+          0: {
+            time: '1',
+            name: 'John',
+            content: 'マーフ可愛いなぁ',
+          },
+          1: {
+            time: '2',
+            name: 'John',
+            content: 'ドローン ゲットだぜ',
+          },
+          2: {
+            time: '3',
+            name: 'John',
+            content: '捏造...',
+          },
+          3: {
+            time: '4',
+            name: 'John',
+            content: 'MRIって大事だよね',
+          },
+          4: {
+            time: '5',
+            name: 'John',
+            content: 'お父さん、後ろ、後ろ〜！',
+          },
+          5: {
+            time: '6',
+            name: 'John',
+            content: 'このシーンか...',
+          },
+        },
         slider: {
           value: 1,
           height: 400,
@@ -63,6 +104,50 @@
           }
         }
       }
+    },
+    computed: {
+      formatTime: function() {
+        let timeStrings = [
+          this.hour.toString(),
+          this.min.toString(),
+          this.sec.toString()
+        ].map(function(str) {
+          if (str.length < 2) {
+            return "0" + str
+          } else {
+            return str
+          }
+        })
+        return timeStrings[0] + ":" + timeStrings[1] + ":" + timeStrings[2]
+      }
+    },
+    methods: {
+      count: function() {
+        if (this.sec >= 59 && this.min <= 59 && this.hour <= 59) {
+          this.min ++;
+          this.sec = 0;
+        } else if (this.sec >= 59 && this.min >= 59 && this.hour <= 59) {
+          this.hour ++;
+          this.min = 0;
+          this.sec = 0;
+        } else if(this.sec >= 59 && this.min >= 59 && this.hour >= 59) {
+          this.complete();
+        } else {
+          this.sec ++;
+        }
+      },
+      start: function() {
+        let self = this;
+        this.timerObj = setInterval(function() {self.count()}, 1000)
+        this.timerOn = true
+      },
+      stop: function() {
+        clearInterval(this.timerObj);
+        this.timerOn = false
+      },
+      complete: function() {
+        clearInterval(this.timerObj)
+      }
     }
   }
 </script>
@@ -72,7 +157,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: .8em 10px .8em 15px;
+  padding: .8em 59px .8em 15px;
   border-bottom: 1px solid #424242;
 }
 .movie__title {
@@ -106,7 +191,7 @@
   width: 20em;
 }
 .talk-list__item:after {
-  right: 100%;
+  right: 590%;
   top: 50%;
   border: solid transparent;
   content: " ";
