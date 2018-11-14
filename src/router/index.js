@@ -1,15 +1,13 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import HelloWorld from '@/components/HelloWorld'
+import Top from '@/components/pages/Top'
+import Watch from '@/components/pages/Watch'
 
 Vue.use(Router)
 
 export default new Router({
   routes: [
-    {
-      path: '/',
-      name: 'HelloWorld',
-      component: HelloWorld
-    }
+    {path: '', name: 'Top', component: Top},
+    {path: '/watch', name: 'Watch', component: Watch}
   ]
 })
