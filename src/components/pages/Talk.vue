@@ -4,11 +4,11 @@
       <h2 class="movie__title">
         <a class="movie__link" href="">インターステラー</a>
       </h2>
-      <a class="uk-button uk-button-default movie-list__stop" href="">一時停止する</a>
+      <a class="movie__stop" href="">一時停止する</a>
     </div>
     <div class="talk">
       <div class="talk-slider">
-        <vue-slider
+        <vue-slider class="hogheoge"
         ref="slider"
         v-bind="slider"
         v-model="slider.value"
@@ -57,13 +57,36 @@
           height: 400,
           width: 4,
           direction: 'vertical',
-        },
+          tooltipDir: "top",
+          bgStyle: {
+            'backgroundColor': '#000'
+          }
+        }
       }
     }
   }
 </script>
 
 <style scoped>
+.movie {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: .8em 10px .8em 15px;
+  border-bottom: 1px solid #424242;
+}
+.movie__title {
+  font-size: 1rem;
+  font-weight: bold;
+  margin: 0;
+  padding: .4em 0;
+}
+.movie__stop {
+  background: rgba(255,255,255,.1);
+  border-radius: 1.5em;
+  padding: .5em 1em;
+  font-size: .8em;
+}
 .talk-slider {
   margin-left: 20px;
   position: fixed;
@@ -73,7 +96,7 @@
   margin: 15px 15px 0 50px;
 }
 .talk-list__item {
-	position: relative;
+  position: relative;
   background: rgba(255,255,255,.1);
   border-radius: 6px;
   padding: .5em;
@@ -83,17 +106,18 @@
   width: 20em;
 }
 .talk-list__item:after {
-	right: 100%;
-	top: 50%;
-	border: solid transparent;
-	content: " ";
-	height: 0;
-	width: 0;
-	position: absolute;
-	pointer-events: none;
-	border-color: rgba(255,255,255,.0);
-	border-right-color: rgba(255,255,255,.1);
-	border-width: 8px;
-	margin-top: -8px;
+  right: 100%;
+  top: 50%;
+  border: solid transparent;
+  content: " ";
+  height: 0;
+  width: 0;
+  position: absolute;
+  pointer-events: none;
+  border-color: rgba(255,255,255,.0);
+  border-right-color: rgba(255,255,255,.1);
+  border-width: 8px;
+  margin-top: -8px;
 }
+
 </style>

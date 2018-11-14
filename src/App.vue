@@ -110,17 +110,4 @@ li {
   padding: 1em;
   display: inline-block;
 }
-.movie {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: .8em 10px .8em 15px;
-  border-bottom: 1px solid #424242;
-}
-.movie__title {
-  font-size: 1rem;
-  font-weight: bold;
-  margin: 0;
-  padding: .4em 0;
-}
 </style>
