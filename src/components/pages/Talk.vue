@@ -16,7 +16,12 @@
         :reverse="true"
         tooltipDir="right"
         tooltip="always"
-        ></vue-slider>
+        >
+        <div class="diy-tooltip" slot="tooltip" slot-scope="{ value }">
+          {{ formatTime }}
+        </div>
+        <!--https://www.npmjs.com/package/vue-slider-component-->
+      </vue-slider>
       </div>
       <ul class="talk-list">
         <li v-for="talk in talks" :key="talk.id" class="talk-list__item">
@@ -103,7 +108,7 @@ export default {
         }
       },
       slider: {
-        value: 1,
+        value: 0,
         height: 400,
         width: 4,
         direction: 'vertical',
@@ -135,6 +140,7 @@ export default {
     count () {
       if (this.sec < this.movieSec) {
         this.sec++
+        //this.slider.value = this.sec/2
       } else {
         this.complete()
       }
