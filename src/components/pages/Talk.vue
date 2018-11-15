@@ -1,20 +1,22 @@
 <template>
   <div class="talk-wrapper">
     <div class="movie">
-      <h2 class="movie__title">
-        <a class="movie__link" href="">インターステラー</a>
-      </h2>
-      <span @click="stopTimer" v-if="timerOn" class="button movie__stop-button">一時停止する</span>
+      <h2 class="movie__title">インターステラー </h2>
+      <span @click="stopTimer" v-if="timerOn" class="button button--secondary">一時停止する</span>
     </div>
     <div>
       <div class="talk__before-start" v-if="!timerOn">
-        <span @click="startTimer" class="button talk__play-button">再生する</span>
+        <p>お持ちのデバイスで再生が始まったら、<br>「再生する」を押してください。</p>
+        <span @click="startTimer" class="button button--primary button--size-grande">再生する</span>
       </div>
       <div v-else>
+        <p class="play-time">
+          <span class="play-time__text">{{ formatTime }}</span>
+        </p>
         <div class="talk">
           <ul class="talk-list">
             <li v-for="talk in talks" :key="talk.id" class="talk-list__item">
-              <span v-show="isPast(talk.time)" class="talk-list__balloon">{{talk.content}}</span>
+              <span v-show="isPast(talk.sec)" class="talk-list__balloon">{{talk.text}}</span>
             </li>
           </ul>
           <div class="talk-slider">
@@ -35,6 +37,10 @@
             </vue-slider>
           </div>
         </div>
+        <div class="write">
+          <input type="text" v-model="comment" />
+          <button @click="emitSubmit">送信</button>
+        </div>
       </div>
     </div>
   </div>
@@ -42,6 +48,7 @@
 
 <script>
 import vueSlider from 'vue-slider-component'
+import axios from 'axios'
 export default {
   components: {
     vueSlider
@@ -56,7 +63,9 @@ export default {
       timerOn: false,
       timerObj: null,
       isBalloonTouched: false,
-      talks: {
+      comment: '',
+      talks: null,
+      /*talks: {
         0: {
           id: '0',
           time: '1',
@@ -92,21 +101,129 @@ export default {
           time: '6060',
           name: 'John',
           content: 'このシーンか...'
+        },
+        6: {
+          id: '6',
+          time: '6060',
+          name: 'John',
+          content: 'このシーンか...'
+        },
+        7: {
+          id: '7',
+          time: '6060',
+          name: 'John',
+          content: 'このシーンか...'
+        },
+        9: {
+          id: '8',
+          time: '6060',
+          name: 'John',
+          content: 'このシーンか...'
+        },
+        10: {
+          id: '8',
+          time: '6060',
+          name: 'John',
+          content: 'このシーンか...'
+        },
+        11: {
+          id: '8',
+          time: '6060',
+          name: 'John',
+          content: 'このシーンか...'
+        },
+        12: {
+          id: '8',
+          time: '6060',
+          name: 'John',
+          content: 'このシーンか...'
+        },
+        13: {
+          id: '8',
+          time: '6060',
+          name: 'John',
+          content: 'このシーンか...'
+        },
+        14: {
+          id: '8',
+          time: '6060',
+          name: 'John',
+          content: 'このシーンか...'
+        },
+        15: {
+          id: '8',
+          time: '6060',
+          name: 'John',
+          content: 'このシーンか...'
+        },
+        16: {
+          id: '8',
+          time: '6060',
+          name: 'John',
+          content: 'このシーンか...'
+        },
+        17: {
+          id: '8',
+          time: '6060',
+          name: 'John',
+          content: 'このシーンか...'
+        },
+        18: {
+          id: '8',
+          time: '6060',
+          name: 'John',
+          content: 'このシーンか...'
+        },
+        19: {
+          id: '8',
+          time: '6060',
+          name: 'John',
+          content: 'このシーンか...'
+        },
+        20: {
+          id: '8',
+          time: '6060',
+          name: 'John',
+          content: 'このシーンか...'
+        },
+        21: {
+          id: '8',
+          time: '6060',
+          name: 'John',
+          content: 'このシーンか...'
+        },
+        22: {
+          id: '8',
+          time: '6060',
+          name: 'John',
+          content: 'このシーンか...'
         }
-      },
+      },*/
       slider: {
         value: 0,
         height: 400,
         width: 4,
         direction: 'vertical',
         bgStyle: {
-          'backgroundColor': '#000'
+          'backgroundColor': '#222'
         },
         processStyle: {
-          'backgroundColor': '#fff'
+          'backgroundColor': '#111'
         }
       }
     }
+  },
+  mounted () {
+    axios
+      .get('http://chocolatina.heteml.jp/movitalk/dummy.json')
+      .then(response => (this.talks = response))
+    /*axios.get("http://chocolatina.heteml.jp/movitalk/dummy.json")
+        .then(function (response) {
+          this.talks = response
+        })
+        .catch(function (error) {
+          console.log(error)
+        })*/
   },
   computed: {
     formatTime () {
@@ -151,6 +268,7 @@ export default {
     },
     dragEnd () {
       this.sec = Math.floor(this.slider.value * (this.movieSec / 100))
+      setTimeout(this.hideBalloon, 1500)
     },
     hideBalloon () {
       this.isBalloonTouched = false
@@ -158,57 +276,63 @@ export default {
     touchBalloon () {
       this.isBalloonTouched = true
       setTimeout(this.hideBalloon, 1500)
-    }
+    },
+    async emitSubmit () {
+      this.$emit('submit', {comment: this.comment, sec: this.sec})
+      this.comment = ""
+    },
   }
 }
 </script>
 
 <style scoped>
-.button {
-  border-radius: 1.5em;
-  padding: .5em 1em;
-  cursor: pointer;
-  padding: .4em 1em;
-}
 .movie {
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: .8em ;
-  border-bottom: 1px solid #424242;
+  border-bottom: 1px solid #333;
+  position: fixed;
+  top: 60px;
+  width: 100%;
+  box-sizing: border-box;
+  background: #2a2a2a;
+  z-index: 999;
 }
 .movie__title {
+  color: #eee;
   font-size: 1rem;
   font-weight: bold;
   margin: 0;
-}
-.movie__stop-button {
-  display: block;
-  background: rgba(255,255,255,.1);
-  font-size: .8em;
-  color: #fff;
-}
-.movie-timer-button:hover {
-  background: rgba(255,255,255,.4);
+  padding: .5em 0;
 }
 .talk__before-start {
-  background: rgba(0,0,0,.5);
+  background: #2a2a2a;
   height: 100vh;
   padding-top: 10em;
   text-align: center;
+  margin-top: 60px;
 }
-.talk__play-button {
-  display: inline-block;
-  background: rgba(255,255,255,.1);
-  color: #fff;
-}
-.talk-slider {
-  margin-left: 20px;
+.play-time {
+  text-align: center;
   position: fixed;
-  top: 130px;
+  top: 120px;
+  left: 50%;
+  margin-left: -2.5em;
+}
+.play-time__text {
+  display: inline-block;
+  background: rgba(255,255,255,.05);
+  font-size: 0.7rem;
+  padding: .3em 1em;
+  border-radius: 1.3em;
+  line-height: 1;
+}
+.talk {
+  margin-top: 180px;
 }
 .talk-list {
-  margin: 15px 15px 0 50px;
+  margin: 15px 15px 0 60px;
 }
 .talk-list__item {
   margin-bottom: 1em;
@@ -216,8 +340,8 @@ export default {
 .talk-list__balloon {
   display: block;
   position: relative;
-  background: rgba(255,255,255,.1);
-  border-radius: 6px;
+  background: rgba(255,255,255,.05);
+  border-radius: 4px;
   padding: .5em;
   font-size: 0.8rem;
   color: #dddddd;
@@ -233,9 +357,14 @@ export default {
   position: absolute;
   pointer-events: none;
   border-color: rgba(255,255,255,.0);
-  border-right-color: rgba(255,255,255,.1);
+  border-right-color: rgba(255,255,255,.05);
   border-width: 8px;
   margin-top: -8px;
+}
+.talk-slider {
+  margin-left: 20px;
+  position: fixed;
+  top: 150px;
 }
 .talk-slider__tooltip {
   background: #000;
@@ -245,10 +374,14 @@ export default {
   color: #fff;
 }
 .talk-slider__dot {
-  background: #fff;
+  background: #666;
   width: 16px;
   height: 16px;
   border-radius: 8px;
 }
-
+.write {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+}
 </style>

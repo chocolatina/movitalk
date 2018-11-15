@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <div>
-      <div class="sticky">
+      <div class="fixed">
         <div class="navbar__nav">
           <!--<a href="index.html" class="navbar__back">
             <span class="movie-list__icon" uk-icon="icon: chevron-left; ratio: 1.2;" />
@@ -25,7 +25,8 @@ export default {
 
 <style>
 html {
-  background: #2C2C2C;
+  background: #2a2a2a;
+  color: #888;
 }
 body {
   margin: 0;
@@ -85,11 +86,12 @@ li {
 }
 
 /* */
-.sticky {
-  position: sticky;
+.fixed {
+  position: fixed;
   top: 0;
-  background: #2c2c2c;
+  background: #222;
   z-index: 999;
+  width: 100%;
 }
 .navbar__nav {
   background: #000;
@@ -109,5 +111,39 @@ li {
 .navbar__nav h1 a{
   padding: 1em;
   display: inline-block;
+}
+
+.button {
+  border-radius: 1.5em;
+  padding: .5em 2em;
+  cursor: pointer;
+  background: #333;
+  color: #fff;
+  font-weight: bold;
+  font-size: .9em
+}
+.button--primary {
+  border-radius: 1.5em;
+  display: inline-flex;
+  background: #ef8100;
+  color: #fff;
+  box-shadow: 0 .2em #e83000;
+}
+.button--secondary {
+  border-radius: 1.5em;
+  display: inline-flex;
+  background: rgba(255,255,255,.1);
+  color: #fff;
+}
+.button--size-tiny {
+  font-size: .8em;
+  font-weight: normal;
+  padding: .5em 1em;
+}
+.button--size-large {
+  font-size: 1em;
+}
+.button--size-grande {
+  font-size: 1.1em;
 }
 </style>
