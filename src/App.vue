@@ -18,8 +18,17 @@
 </template>
 
 <script>
+import axios from 'axios'
 export default {
-  name: 'App'
+  mounted () {
+    axios.get("http://chocolatina.heteml.jp/movitalk/dummy.json")
+      .then(function (response) {
+        this.talks = response
+      })
+      .catch(function (error) {
+        console.log(error)
+      })
+  }
 }
 </script>
 

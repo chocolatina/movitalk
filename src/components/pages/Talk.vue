@@ -214,16 +214,16 @@ export default {
     }
   },
   mounted () {
-    axios
+    /*axios
       .get('http://chocolatina.heteml.jp/movitalk/dummy.json')
-      .then(response => (this.talks = response))
-    /*axios.get("http://chocolatina.heteml.jp/movitalk/dummy.json")
+      .then(response => (this.talks = response))*/
+    axios.get("http://chocolatina.heteml.jp/movitalk/dummy.json")
         .then(function (response) {
           this.talks = response
         })
         .catch(function (error) {
           console.log(error)
-        })*/
+        })
   },
   computed: {
     formatTime () {
