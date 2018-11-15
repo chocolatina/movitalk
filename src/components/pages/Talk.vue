@@ -2,54 +2,34 @@
   <div class="talk-wrapper">
     <div class="movie">
       <h2 class="movie__title">
-        <a class="movie__link" href="">インターステラー{{ formatTime }}</a>
+        <a class="movie__link" href="">インターステラー</a>
       </h2>
-      <button v-on:click="start" v-if="!timerOn">Start</button>
-      <button v-on:click="stop" v-if="timerOn">Stop</button>
+      <span @click="startTimer" v-if="!timerOn">Start</span>
+      <span @click="stopTimer" v-if="timerOn">Stop</span>
     </div>
     <div class="talk">
-      <div class="talk-slider">
-        <vue-slider class="hogheoge"
-        ref="slider"
-        v-bind="slider"
-        v-model="slider.value"
-        :reverse="true"
-        tooltipDir="right"
-        tooltip="always"
-        @drag-end="dragEnd"
-        >
-        <div class="diy-tooltip" slot="tooltip" slot-scope="{ value }">
-          {{ formatTime }}
-        </div>
-        <!--https://www.npmjs.com/package/vue-slider-component-->
-      </vue-slider>
-      </div>
       <ul class="talk-list">
         <li v-for="talk in talks" :key="talk.id" class="talk-list__item">
           <span v-show="isPast(talk.time)" class="talk-list__balloon">{{talk.content}}</span>
         </li>
-        <!--<li class="talk-list__item">マーフ可愛いなぁ</li>
-        <li class="talk-list__item">ドローン ゲットだぜ</li>
-        <li class="talk-list__item">捏造...</li>
-        <li class="talk-list__item">MRIって大事だよね</li>
-        <li class="talk-list__item">お父さん、後ろ、後ろ〜！</li>
-        <li class="talk-list__item">このシーンか...</li>
-        <li class="talk-list__item">マーフ、このトラックにお父さん乗ってるって期待しちゃうよね</li>
-        <li class="talk-list__item">ワームホールが球ってなるほどな〜</li>
-        <li class="talk-list__item">ワームホールの中怖すぎ</li>
-        <li class="talk-list__item">この映画は時たまぞっとするほど怖い</li>
-        <li class="talk-list__item">ああ〜〜怖い怖い怖い</li>
-        <li class="talk-list__item">この時間の流れ、絶望してしまうな</li>
-        <li class="talk-list__item">1時間が7年...!!!!!</li>
-        <li class="talk-list__item">23年、本当に途方も無い</li>
-        <li class="talk-list__item">泣いちゃうよ、こんなのは</li>
-        <li class="talk-list__item">泣いちゃうよ、こんなのは</li>
-        <li class="talk-list__item">教授〜〜〜</li>
-        <li class="talk-list__item">ダメな方のオデッセイ始まった</li>
-        <li class="talk-list__item">23年も待ったのに、ロミリー可哀想すぎる</li>
-        <li class="talk-list__item">ガルガンチュア果てしなく大きいな</li>
-        <li class="talk-list__item">ユリイカ！！！！！！！！！</li>-->
       </ul>
+      <div class="talk-slider">
+        <vue-slider
+          ref="slider"
+          v-bind="slider"
+          v-model="slider.value"
+          :reverse="true"
+          tooltipDir="right"
+          tooltip="always"
+          @drag-start="dragStart"
+          @drag-end="dragEnd"
+        >
+        <div slot="dot" class="talk-slider__dot" @click="touchBalloon"></div>
+        <div v-show="isBalloonTouched" class="talk-slider__tooltip" slot="tooltip" slot-scope="{ value }">
+          {{ formatTime }}
+        </div>
+      </vue-slider>
+      </div>
     </div>
   </div>
 </template>
@@ -69,7 +49,7 @@ export default {
       clockSec: 0,
       timerOn: false,
       timerObj: null,
-      cats: ['Norwegian Forest Cat', 'Maine Coon', 'Munchkin'],
+      isBalloonTouched: false,
       talks: {
         0: {
           id: '0',
@@ -113,9 +93,11 @@ export default {
         height: 400,
         width: 4,
         direction: 'vertical',
-        tooltipDir: 'top',
         bgStyle: {
           'backgroundColor': '#000'
+        },
+        processStyle: {
+          'backgroundColor': '#fff'
         }
       }
     }
@@ -139,17 +121,16 @@ export default {
     count () {
       if (this.sec < this.movieSec) {
         this.sec++
-        //this.slider.value = this.sec/2
       } else {
         this.complete()
       }
     },
-    start () {
+    startTimer () {
       let self = this
       this.timerObj = setInterval(function () { self.count() }, 1000)
       this.timerOn = true
     },
-    stop () {
+    stopTimer () {
       clearInterval(this.timerObj)
       this.timerOn = false
     },
@@ -159,9 +140,20 @@ export default {
     isPast (time) {
       return time < this.sec
     },
+    dragStart() {
+      this.isBalloonTouched = true
+    },
     dragEnd() {
-      this.sec = Math.floor(this.slider.value * (this.movieSec/100))
-    }
+      //this.isBalloonTouched = false
+      this.sec = Math.floor(this.slider.value * (this.movieSec / 100))
+    },
+    hideBalloon() {
+      this.isBalloonTouched = false
+    },
+    touchBalloon() {
+      this.isBalloonTouched = true
+      setTimeout(this.hideBalloon, 1500)
+    },
   }
 }
 </script>
@@ -221,8 +213,18 @@ export default {
   border-width: 8px;
   margin-top: -8px;
 }
-.diy-tooltip {
+.talk-slider__tooltip {
+  background: #000;
+  border-radius: 1em;
+  line-height: 1;
+  padding: .5em;
+  color: #fff;
+}
+.talk-slider__dot {
   background: #fff;
+  width: 16px;
+  height: 16px;
+  border-radius: 8px;
 }
 
 </style>
