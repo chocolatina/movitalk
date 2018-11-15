@@ -16,6 +16,7 @@
         :reverse="true"
         tooltipDir="right"
         tooltip="always"
+        @drag-end="dragEnd"
         >
         <div class="diy-tooltip" slot="tooltip" slot-scope="{ value }">
           {{ formatTime }}
@@ -61,7 +62,7 @@ export default {
   },
   data () {
     return {
-      movieSec: 5400,
+      movieSec: 10140,
       sec: 0,
       clockHour: 0,
       clockMin: 0,
@@ -78,31 +79,31 @@ export default {
         },
         1: {
           id: '1',
-          time: '2',
+          time: '200',
           name: 'John',
           content: 'ドローン ゲットだぜ'
         },
         2: {
           id: '2',
-          time: '3',
+          time: '300',
           name: 'John',
           content: '捏造...'
         },
         3: {
           id: '3',
-          time: '4',
+          time: '1400',
           name: 'John',
           content: 'MRIって大事だよね'
         },
         4: {
           id: '4',
-          time: '5',
+          time: '5250',
           name: 'John',
           content: 'お父さん、後ろ、後ろ〜！'
         },
         5: {
           id: '5',
-          time: '6',
+          time: '6060',
           name: 'John',
           content: 'このシーンか...'
         }
@@ -120,10 +121,8 @@ export default {
     }
   },
   computed: {
-
     formatTime () {
       let timeStrings = []
-
       timeStrings[0] = (this.sec % 60).toString()
       timeStrings[1] = (((this.sec % 3600) - timeStrings[0]) / 60).toString()
       timeStrings[2] = (((this.sec % 216000) - (timeStrings[1]*60) - timeStrings[0]) / 3600).toString()
@@ -159,6 +158,9 @@ export default {
     },
     isPast (time) {
       return time < this.sec
+    },
+    dragEnd() {
+      this.sec = Math.floor(this.slider.value * (this.movieSec/100))
     }
   }
 }
@@ -218,6 +220,9 @@ export default {
   border-right-color: rgba(255,255,255,.1);
   border-width: 8px;
   margin-top: -8px;
+}
+.diy-tooltip {
+  background: #fff;
 }
 
 </style>
