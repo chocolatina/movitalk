@@ -4,31 +4,37 @@
       <h2 class="movie__title">
         <a class="movie__link" href="">インターステラー</a>
       </h2>
-      <span @click="startTimer" v-if="!timerOn">Start</span>
-      <span @click="stopTimer" v-if="timerOn">Stop</span>
+      <span @click="stopTimer" v-if="timerOn" class="button movie__stop-button">一時停止する</span>
     </div>
-    <div class="talk">
-      <ul class="talk-list">
-        <li v-for="talk in talks" :key="talk.id" class="talk-list__item">
-          <span v-show="isPast(talk.time)" class="talk-list__balloon">{{talk.content}}</span>
-        </li>
-      </ul>
-      <div class="talk-slider">
-        <vue-slider
-          ref="slider"
-          v-bind="slider"
-          v-model="slider.value"
-          :reverse="true"
-          tooltipDir="right"
-          tooltip="always"
-          @drag-start="dragStart"
-          @drag-end="dragEnd"
-        >
-        <div slot="dot" class="talk-slider__dot" @click="touchBalloon"></div>
-        <div v-show="isBalloonTouched" class="talk-slider__tooltip" slot="tooltip" slot-scope="{ value }">
-          {{ formatTime }}
+    <div>
+      <div class="talk__before-start" v-if="!timerOn">
+        <span @click="startTimer" class="button talk__play-button">再生する</span>
+      </div>
+      <div v-else>
+        <div class="talk">
+          <ul class="talk-list">
+            <li v-for="talk in talks" :key="talk.id" class="talk-list__item">
+              <span v-show="isPast(talk.time)" class="talk-list__balloon">{{talk.content}}</span>
+            </li>
+          </ul>
+          <div class="talk-slider">
+            <vue-slider
+              ref="slider"
+              v-bind="slider"
+              v-model="slider.value"
+              :reverse="true"
+              tooltipDir="right"
+              tooltip="always"
+              @drag-start="dragStart"
+              @drag-end="dragEnd"
+            >
+              <div slot="dot" class="talk-slider__dot" @click="touchBalloon"></div>
+              <div v-show="isBalloonTouched" class="talk-slider__tooltip" slot="tooltip" slot-scope="{ value }">
+                {{ formatTime }}
+              </div>
+            </vue-slider>
+          </div>
         </div>
-      </vue-slider>
       </div>
     </div>
   </div>
@@ -107,11 +113,11 @@ export default {
       let timeStrings = []
       timeStrings[0] = (this.sec % 60).toString()
       timeStrings[1] = (((this.sec % 3600) - timeStrings[0]) / 60).toString()
-      timeStrings[2] = (((this.sec % 216000) - (timeStrings[1]*60) - timeStrings[0]) / 3600).toString()
-      if(timeStrings[0].length < 2) {
+      timeStrings[2] = (((this.sec % 216000) - (timeStrings[1] * 60) - timeStrings[0]) / 3600).toString()
+      if (timeStrings[0].length < 2) {
         timeStrings[0] = '0' + timeStrings[0]
       }
-      if(timeStrings[1].length < 2) {
+      if (timeStrings[1].length < 2) {
         timeStrings[1] = '0' + timeStrings[1]
       }
       return timeStrings[2] + ':' + timeStrings[1] + ':' + timeStrings[0]
@@ -140,43 +146,61 @@ export default {
     isPast (time) {
       return time < this.sec
     },
-    dragStart() {
+    dragStart () {
       this.isBalloonTouched = true
     },
-    dragEnd() {
-      //this.isBalloonTouched = false
+    dragEnd () {
       this.sec = Math.floor(this.slider.value * (this.movieSec / 100))
     },
-    hideBalloon() {
+    hideBalloon () {
       this.isBalloonTouched = false
     },
-    touchBalloon() {
+    touchBalloon () {
       this.isBalloonTouched = true
       setTimeout(this.hideBalloon, 1500)
-    },
+    }
   }
 }
 </script>
 
 <style scoped>
+.button {
+  border-radius: 1.5em;
+  padding: .5em 1em;
+  cursor: pointer;
+  padding: .4em 1em;
+}
 .movie {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: .8em 59px .8em 15px;
+  padding: .8em ;
   border-bottom: 1px solid #424242;
 }
 .movie__title {
   font-size: 1rem;
   font-weight: bold;
   margin: 0;
-  padding: .4em 0;
 }
-.movie__stop {
+.movie__stop-button {
+  display: block;
   background: rgba(255,255,255,.1);
-  border-radius: 1.5em;
-  padding: .5em 1em;
   font-size: .8em;
+  color: #fff;
+}
+.movie-timer-button:hover {
+  background: rgba(255,255,255,.4);
+}
+.talk__before-start {
+  background: rgba(0,0,0,.5);
+  height: 100vh;
+  padding-top: 10em;
+  text-align: center;
+}
+.talk__play-button {
+  display: inline-block;
+  background: rgba(255,255,255,.1);
+  color: #fff;
 }
 .talk-slider {
   margin-left: 20px;
