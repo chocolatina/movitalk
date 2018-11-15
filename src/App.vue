@@ -7,7 +7,7 @@
             <span class="movie-list__icon" uk-icon="icon: chevron-left; ratio: 1.2;" />
           </a>-->
           <p></p>
-          <h1><a href="index.html">ムビトーク{{msg}}</a></h1>
+          <h1><a href="index.html">ムビトーク</a></h1>
           <p></p>
         </div>
       </div>
@@ -19,7 +19,7 @@
 
 <script>
 export default {
-  name: 'App',
+  name: 'App'
 }
 </script>
 
