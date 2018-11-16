@@ -16,7 +16,7 @@
         <div class="talk">
           <ul class="talk-list">
             <li v-for="talk in talks" :key="talk.id" class="talk-list__item">
-              <span v-show="isPast(talk.sec)" class="talk-list__balloon">{{talk.text}}</span>
+              <span v-show="isPast(talk.time)" class="talk-list__balloon">{{talk.text}}</span>
             </li>
           </ul>
           <div class="talk-slider">
