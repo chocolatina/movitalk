@@ -55,7 +55,7 @@ export default {
   },
   data () {
     return {
-      movieSec: 10140,
+      movieSec: 8640,
       sec: 0,
       clockHour: 0,
       clockMin: 0,
