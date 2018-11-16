@@ -17,21 +17,6 @@
   </div>
 </template>
 
-<script>
-import axios from 'axios'
-export default {
-  mounted () {
-    axios.get("http://chocolatina.heteml.jp/movitalk/dummy.json")
-      .then(function (response) {
-        this.talks = response
-      })
-      .catch(function (error) {
-        console.log(error)
-      })
-  }
-}
-</script>
-
 <style>
 html {
   background: #2a2a2a;

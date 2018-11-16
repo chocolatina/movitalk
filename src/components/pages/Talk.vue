@@ -65,140 +65,6 @@ export default {
       isBalloonTouched: false,
       comment: '',
       talks: null,
-      /*talks: {
-        0: {
-          id: '0',
-          time: '1',
-          name: 'John',
-          content: 'マーフ可愛いなぁ'
-        },
-        1: {
-          id: '1',
-          time: '200',
-          name: 'John',
-          content: 'ドローン ゲットだぜ'
-        },
-        2: {
-          id: '2',
-          time: '300',
-          name: 'John',
-          content: '捏造...'
-        },
-        3: {
-          id: '3',
-          time: '1400',
-          name: 'John',
-          content: 'MRIって大事だよね'
-        },
-        4: {
-          id: '4',
-          time: '5250',
-          name: 'John',
-          content: 'お父さん、後ろ、後ろ〜！'
-        },
-        5: {
-          id: '5',
-          time: '6060',
-          name: 'John',
-          content: 'このシーンか...'
-        },
-        6: {
-          id: '6',
-          time: '6060',
-          name: 'John',
-          content: 'このシーンか...'
-        },
-        7: {
-          id: '7',
-          time: '6060',
-          name: 'John',
-          content: 'このシーンか...'
-        },
-        9: {
-          id: '8',
-          time: '6060',
-          name: 'John',
-          content: 'このシーンか...'
-        },
-        10: {
-          id: '8',
-          time: '6060',
-          name: 'John',
-          content: 'このシーンか...'
-        },
-        11: {
-          id: '8',
-          time: '6060',
-          name: 'John',
-          content: 'このシーンか...'
-        },
-        12: {
-          id: '8',
-          time: '6060',
-          name: 'John',
-          content: 'このシーンか...'
-        },
-        13: {
-          id: '8',
-          time: '6060',
-          name: 'John',
-          content: 'このシーンか...'
-        },
-        14: {
-          id: '8',
-          time: '6060',
-          name: 'John',
-          content: 'このシーンか...'
-        },
-        15: {
-          id: '8',
-          time: '6060',
-          name: 'John',
-          content: 'このシーンか...'
-        },
-        16: {
-          id: '8',
-          time: '6060',
-          name: 'John',
-          content: 'このシーンか...'
-        },
-        17: {
-          id: '8',
-          time: '6060',
-          name: 'John',
-          content: 'このシーンか...'
-        },
-        18: {
-          id: '8',
-          time: '6060',
-          name: 'John',
-          content: 'このシーンか...'
-        },
-        19: {
-          id: '8',
-          time: '6060',
-          name: 'John',
-          content: 'このシーンか...'
-        },
-        20: {
-          id: '8',
-          time: '6060',
-          name: 'John',
-          content: 'このシーンか...'
-        },
-        21: {
-          id: '8',
-          time: '6060',
-          name: 'John',
-          content: 'このシーンか...'
-        },
-        22: {
-          id: '8',
-          time: '6060',
-          name: 'John',
-          content: 'このシーンか...'
-        }
-      },*/
       slider: {
         value: 0,
         height: 400,
@@ -214,16 +80,14 @@ export default {
     }
   },
   mounted () {
-    /*axios
-      .get('http://chocolatina.heteml.jp/movitalk/dummy.json')
-      .then(response => (this.talks = response))*/
-    axios.get("http://chocolatina.heteml.jp/movitalk/dummy.json")
-        .then(function (response) {
-          this.talks = response
-        })
-        .catch(function (error) {
-          console.log(error)
-        })
+    axios.get('http://localhost:3000/talks/index')
+      .then((response) => {
+        this.talks = response.data
+        console.log(this.talks)
+      })
+      .catch(function (error) {
+        console.log(error)
+      })
   },
   computed: {
     formatTime () {
@@ -279,8 +143,8 @@ export default {
     },
     async emitSubmit () {
       this.$emit('submit', {comment: this.comment, sec: this.sec})
-      this.comment = ""
-    },
+      this.comment = ''
+    }
   }
 }
 </script>
