@@ -80,7 +80,7 @@ export default {
     }
   },
   mounted () {
-    axios.get('http://localhost:3000/talks/index')
+    axios.get('http://localhost:3000/talk/index')
       .then((response) => {
         this.talks = response.data
         console.log(this.talks)
