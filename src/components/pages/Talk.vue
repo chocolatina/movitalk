@@ -1,7 +1,7 @@
 <template>
   <div class="talk-wrapper">
     <div class="movie">
-      <h2 class="movie__title">インターステラー </h2>
+      <h2 class="movie__title">ショーシャンクの空に</h2>
       <span @click="stopTimer" v-if="timerOn" class="button button--secondary">一時停止する</span>
     </div>
     <div>

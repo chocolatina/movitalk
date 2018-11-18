@@ -16,7 +16,6 @@
     <router-view/>
   </div>
 </template>
-
 <style>
 html {
   background: #2a2a2a;
