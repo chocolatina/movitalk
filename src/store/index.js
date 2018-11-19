@@ -4,7 +4,7 @@ import Vuex from 'vuex'
 
 Vue.use(Vuex)
 
-const store = new Vuex.Store({
+const Talk = {
   state: {
     memo: 1,
     number: 5
@@ -22,14 +22,17 @@ const store = new Vuex.Store({
     increment (state, n) {
       state.memo += n
     }
-
   },
   actions: {
     increment (context, n) {
       context.commit('increment', n)
     }
-  },
+  }
+}
+
+const store = new Vuex.Store({
   modules: {
+    Talk
   }
 })
 export default store
