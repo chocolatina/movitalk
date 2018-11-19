@@ -15,7 +15,7 @@
         </p>
         <div class="talk">
           <ul class="talk-list">
-            <li v-for="talk in talks" :key="talk.id" class="talk-list__item">
+            <li v-for="talk in sortedTalks" :key="talk.id" class="talk-list__item">
               <span v-show="isPast(talk.time)" class="talk-list__balloon">{{talk.text}}</span>
             </li>
           </ul>
@@ -96,7 +96,15 @@ export default {
       return timeStrings[2] + ':' + timeStrings[1] + ':' + timeStrings[0]
     },
     talks () {
+      // return this.$store.getters.talk.sort(this.$store.getters.talk.time)
       return this.$store.getters.talk
+    },
+    sortedTalks () {
+      return this.talks.sort(function(a,b){
+        if(a.time<b.time) return -1
+        if(a.time > b.time) return 1
+        return 0
+      })
     }
   },
   methods: {
