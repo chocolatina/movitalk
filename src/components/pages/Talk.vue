@@ -136,10 +136,10 @@ export default {
       this.isBalloonTouched = true
       setTimeout(this.hideBalloon, 1500)
     },
-    async emitSubmit () {
+    /*async emitSubmit () {
       this.$emit('submit', {comment: this.comment, sec: this.sec})
       this.comment = ''
-    },
+    },*/
     talkData () {
       return this.$store.dispatch('getTalkAction')
     },
@@ -147,10 +147,10 @@ export default {
       axios.post('http://localhost:3000/talk/create',{
         talk: {
           film_id: '1',
-          time: '1',
+          time: this.sec,
           user_id: '1',
-          faved: '1',
-          text: 'uuuuuuu'
+          faved: '0',
+          text: this.comment
         }
       })
       .then(function (response) {
