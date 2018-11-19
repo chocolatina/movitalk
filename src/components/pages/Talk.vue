@@ -39,7 +39,7 @@
         </div>
         <div class="write">
           <input type="text" v-model="comment" />
-          <button @click="emitSubmit">送信</button>
+          <button @click="createTalk">送信</button>
         </div>
       </div>
     </div>
@@ -48,6 +48,7 @@
 
 <script>
 import vueSlider from 'vue-slider-component'
+import axios from 'axios'
 export default {
   components: {
     vueSlider
@@ -141,6 +142,23 @@ export default {
     },
     talkData () {
       return this.$store.dispatch('getTalkAction')
+    },
+    createTalk: function() {
+      axios.post('http://localhost:3000/talk/create',{
+        talk: {
+          film_id: '1',
+          time: '1',
+          user_id: '1',
+          faved: '1',
+          text: 'uuuuuuu'
+        }
+      })
+      .then(function (response) {
+        console.log(response);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
     }
   }
 }
