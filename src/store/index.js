@@ -1,31 +1,30 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-// import axios from 'axios'
+import axios from 'axios'
 
 Vue.use(Vuex)
 
 const Talk = {
   state: {
-    memo: 1,
-    number: 5
+    talk: ''
   },
   getters: {
-    memo (state) {
-      return state.memo
-    }
+    talk (state) { return state.talk }
   },
   mutations: {
-    addMemo (state, n) {
-      // state.memo.push
-      state.memo += n
-    },
-    increment (state, n) {
-      state.memo += n
+    getTalk (state, payload) {
+      state.talk = payload.talk
     }
   },
   actions: {
-    increment (context, n) {
-      context.commit('increment', n)
+    async getTalkAction (context) {
+      const payload = {
+        talk: ''
+      }
+      await axios.get('http://localhost:3000/talk/index').then((res) => {
+        payload.talk = res.data
+      })
+      context.commit('getTalk', payload)
     }
   }
 }

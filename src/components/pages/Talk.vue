@@ -48,7 +48,6 @@
 
 <script>
 import vueSlider from 'vue-slider-component'
-import axios from 'axios'
 export default {
   components: {
     vueSlider
@@ -64,7 +63,6 @@ export default {
       timerObj: null,
       isBalloonTouched: false,
       comment: '',
-      talks: null,
       slider: {
         value: 0,
         height: 400,
@@ -80,14 +78,7 @@ export default {
     }
   },
   mounted () {
-    axios.get('http://localhost:3000/talk/index')
-      .then((response) => {
-        this.talks = response.data
-        console.log(this.talks)
-      })
-      .catch(function (error) {
-        console.log(error)
-      })
+    this.talkData()
   },
   computed: {
     formatTime () {
@@ -102,6 +93,9 @@ export default {
         timeStrings[1] = '0' + timeStrings[1]
       }
       return timeStrings[2] + ':' + timeStrings[1] + ':' + timeStrings[0]
+    },
+    talks () {
+      return this.$store.getters.talk
     }
   },
   methods: {
@@ -144,6 +138,9 @@ export default {
     async emitSubmit () {
       this.$emit('submit', {comment: this.comment, sec: this.sec})
       this.comment = ''
+    },
+    talkData () {
+      return this.$store.dispatch('getTalkAction')
     }
   }
 }
