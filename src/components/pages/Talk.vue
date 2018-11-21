@@ -96,7 +96,6 @@ export default {
       return timeStrings[2] + ':' + timeStrings[1] + ':' + timeStrings[0]
     },
     talks () {
-      // return this.$store.getters.talk.sort(this.$store.getters.talk.time)
       return this.$store.getters.talk
     },
     sortedTalks () {
@@ -150,8 +149,10 @@ export default {
     },*/
     talkData () {
       return this.$store.dispatch('getTalkAction')
+      console.log("hoge")
     },
     createTalk: function() {
+      const that = this
       axios.post('http://localhost:3000/talk/create',{
         talk: {
           film_id: '1',
@@ -162,11 +163,12 @@ export default {
         }
       })
       .then(function (response) {
-        console.log(response);
+        that.comment = ""
+        // this.talkData()
       })
       .catch(function (error) {
-        console.log(error);
-      });
+      })
+      that.talkData()
     }
   }
 }
