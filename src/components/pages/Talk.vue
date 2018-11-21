@@ -1,5 +1,5 @@
 <template>
-  <div class="talk-wrapper">
+  <div class="talk-wrapper" ref="talkwrapper" id="talk-wrapper">
     <div class="movie">
       <h2 class="movie__title">ショーシャンクの空に</h2>
       <span @click="stopTimer" v-if="timerOn" class="button button--secondary">一時停止する</span>
@@ -16,7 +16,7 @@
         <div class="talk">
           <ul class="talk-list">
             <li v-for="talk in sortedTalks" :key="talk.id" class="talk-list__item">
-              <span v-show="isPast(talk.time)" class="talk-list__balloon">{{talk.text}}</span>
+              <span class="talk-list__balloon" :class="{'talk-list__balloon--shown': isPast(talk.time)}">{{talk.text}}</span>
             </li>
           </ul>
           <div class="talk-slider">
@@ -99,9 +99,9 @@ export default {
       return this.$store.getters.talk
     },
     sortedTalks () {
-      return this.talks.sort(function(a,b){
-        if(a.time<b.time) return -1
-        if(a.time > b.time) return 1
+      return this.talks.sort(function (a, b) {
+        if (a.time < b.time) return -1
+        if (a.time > b.time) return 1
         return 0
       })
     }
@@ -110,9 +110,20 @@ export default {
     count () {
       if (this.sec < this.movieSec) {
         this.sec++
+        // console.log(this.$refs.talkwrapper.clientHeight)
+        // console.log(this.$el.querySelector(".talkwrapper").scrollTop)
+        // this.$refs.talkwrapper.scrollTop = this.$refs.talkwrapper.clientHeight
+        this.scrollToEnd()
       } else {
         this.complete()
       }
+    },
+  	scrollToEnd: function() {
+      var container = this.$el.querySelector('.talk')
+      //console.log(container)
+      container.scrollTop = container.scrollHeight
+      console.log(container.scrollTop)
+      console.log(container.scrollHeight)
     },
     startTimer () {
       let self = this
@@ -146,9 +157,9 @@ export default {
     talkData () {
       return this.$store.dispatch('getTalkAction')
     },
-    createTalk: function() {
+    createTalk: function () {
       const that = this
-      axios.post('http://localhost:3000/talk/create',{
+      axios.post('http://localhost:3000/talk/create', {
         talk: {
           film_id: '1',
           time: this.sec,
@@ -156,12 +167,11 @@ export default {
           faved: '0',
           text: this.comment
         }
-      })
-      .then(function (response) {
-        that.comment = ""
+      }).then(function (response) {
+        that.comment = ''
         that.talkData()
-      })
-      .catch(function (error) {
+      }).catch(function (error) {
+        console.log(error)
       })
     }
   }
@@ -221,7 +231,6 @@ export default {
   margin-bottom: 1em;
 }
 .talk-list__balloon {
-  display: block;
   position: relative;
   background: rgba(255,255,255,.05);
   border-radius: 4px;
@@ -229,6 +238,10 @@ export default {
   font-size: 0.8rem;
   color: #dddddd;
   width: 20em;
+  display: none;
+  /* visibility: hidden;
+  overflow: hidden;
+  height: 0; */
 }
 .talk-list__balloon:after {
   right: 100%;
@@ -243,6 +256,9 @@ export default {
   border-right-color: rgba(255,255,255,.05);
   border-width: 8px;
   margin-top: -8px;
+}
+.talk-list__balloon--shown {
+  display: block;
 }
 .talk-slider {
   margin-left: 20px;
