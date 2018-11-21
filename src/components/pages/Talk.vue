@@ -143,13 +143,8 @@ export default {
       this.isBalloonTouched = true
       setTimeout(this.hideBalloon, 1500)
     },
-    /*async emitSubmit () {
-      this.$emit('submit', {comment: this.comment, sec: this.sec})
-      this.comment = ''
-    },*/
     talkData () {
       return this.$store.dispatch('getTalkAction')
-      console.log("hoge")
     },
     createTalk: function() {
       const that = this
@@ -164,11 +159,10 @@ export default {
       })
       .then(function (response) {
         that.comment = ""
-        // this.talkData()
+        that.talkData()
       })
       .catch(function (error) {
       })
-      that.talkData()
     }
   }
 }
