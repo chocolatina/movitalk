@@ -1,5 +1,5 @@
 <template>
-  <div class="talk-wrapper" ref="talkwrapper" id="talk-wrapper">
+  <div class="talk-wrapper">
     <div class="movie">
       <h2 class="movie__title">ショーシャンクの空に</h2>
       <span @click="stopTimer" v-if="timerOn" class="button button--secondary">一時停止する</span>
@@ -113,18 +113,20 @@ export default {
         // console.log(this.$refs.talkwrapper.clientHeight)
         // console.log(this.$el.querySelector(".talkwrapper").scrollTop)
         // this.$refs.talkwrapper.scrollTop = this.$refs.talkwrapper.clientHeight
-        this.scrollToEnd()
+        // this.scrollToEnd()
       } else {
         this.complete()
       }
     },
-  	scrollToEnd: function() {
-      var container = this.$el.querySelector('.talk')
+  	/* scrollToEnd () {
+      var container = this.$el.querySelector('.talk-list')
+      // console.log(container.clientHeight)
       //console.log(container)
-      container.scrollTop = container.scrollHeight
-      console.log(container.scrollTop)
-      console.log(container.scrollHeight)
-    },
+      // window.scrollHeight = container.scrollHeight
+      // container.scrollTo(0,container.clientHeight)
+      //console.log(container.scrollTop)
+      //console.log(container.scrollHeight)
+    },*/
     startTimer () {
       let self = this
       this.timerObj = setInterval(function () { self.count() }, 1000)
@@ -221,11 +223,19 @@ export default {
   border-radius: 1.3em;
   line-height: 1;
 }
+.talk-wrapper {
+}
 .talk {
   margin-top: 180px;
+  height: 100%;
 }
 .talk-list {
   margin: 15px 15px 0 60px;
+  position: fixed;
+  bottom: 0;
+  max-height: 100%;
+  width: 100%;
+  overflow: scroll;
 }
 .talk-list__item {
   margin-bottom: 1em;
@@ -258,6 +268,8 @@ export default {
   margin-top: -8px;
 }
 .talk-list__balloon--shown {
+  /* visibility: visible;
+  height: 3em; */
   display: block;
 }
 .talk-slider {
