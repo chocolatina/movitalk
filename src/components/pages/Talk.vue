@@ -1,8 +1,11 @@
 <template>
   <div class="talk-wrapper">
-    <div class="movie">
-      <h2 class="movie__title">ショーシャンクの空に</h2>
-      <span @click="stopTimer" v-if="timerOn" class="button button--secondary">一時停止する</span>
+    <div class="movie-wrapper">
+      <div class="movie">
+        <h2 class="movie__title">ショーシャンクの空に</h2>
+        <span @click="stopTimer" v-if="timerOn" class="button button--secondary">一時停止する</span>
+      </div>
+      <p v-if="!timerOn" class="movie-overview">{{ overview }}</p>
     </div>
     <div>
       <div class="talk__before-start" v-if="!timerOn">
@@ -64,6 +67,7 @@ export default {
       timerObj: null,
       isBalloonTouched: false,
       comment: '',
+      overview: '',
       slider: {
         value: 0,
         height: 400,
@@ -80,6 +84,7 @@ export default {
   },
   mounted () {
     this.talkData()
+    this.getMovieThumbnail()
   },
   computed: {
     formatTime () {
@@ -159,6 +164,16 @@ export default {
     talkData () {
       return this.$store.dispatch('getTalkAction')
     },
+    getMovieThumbnail () {
+      const that = this
+      axios.get('https://api.themoviedb.org/3/movie/278?api_key=e78219babfc25468e5d1a08e84ac72ee&language=ja').then(function (response) {
+        that.overview = response.data.overview
+        //console.log(response.data.overview)
+      }).catch(function (error) {
+        console.log(error)
+      })
+
+    },
     createTalk: function () {
       const that = this
       axios.post('http://localhost:3000/talk/create', {
@@ -200,6 +215,9 @@ export default {
   font-weight: bold;
   margin: 0;
   padding: .5em 0;
+}
+.movie-overview {
+  font-size: .9em;
 }
 .talk__before-start {
   background: #2a2a2a;
