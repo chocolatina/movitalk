@@ -49,10 +49,10 @@ export default {
 .movie-list__link{
   font-size: 1rem;
   padding: 1.2em 10px 1.2em 15px;
-  font-weight: bold;
   display: flex;
   justify-content: space-between;
   width: 100%;
+  color: #ffffff;
 }
 .movie-list__icon {
   color: #FF9500;

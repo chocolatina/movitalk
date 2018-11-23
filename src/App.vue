@@ -7,7 +7,7 @@
             <span class="movie-list__icon" uk-icon="icon: chevron-left; ratio: 1.2;" />
           </a>-->
           <p></p>
-          <h1><a href="index.html">ムビトーク</a></h1>
+          <h1><router-link :to="{ name: 'talks'}">ムビトーク</router-link></h1>
           <p></p>
         </div>
       </div>
@@ -33,8 +33,13 @@ body {
   letter-spacing: .05em;
 }
 a, a:hover {
-  color: #fff;
   text-decoration: none;
+}
+a {
+  color: #ffb100;
+}
+a:hover {
+  color: #ef8100;
 }
 ul {
   list-style: none;
@@ -53,46 +58,6 @@ p {
 p,div,ul,li,a,span {
   box-sizing: border-box;
 }
-/* */
-.uk-button {
-  border-radius: 1.5em;
-  display: inline-block;
-  font-weight: bold;
-}
-.uk-button-default, .uk-button-primary {
-  border: none;
-}
-
-.uk-button-default {
-  background-color: rgba(255,255,255,.1);
-  color: #fff;
-}
-.uk-button-default:hover,
-.uk-button-default:focus {
-  background-color: rgba(255,255,255,.1);
-  color: #fff;
-}
-.uk-button-default:active,
-.uk-button-default.uk-active {
-  background-color: rgba(255,255,255,.1);
-  color: #fff;
-}
-
-.uk-button-primary {
-  color: #fff;
-  background-color: #FF9500;
-}
-.uk-button-primary:hover,
-.uk-button-primary:focus {
-  background-color: #D96D00;
-}
-.uk-button-primary:active,
-.uk-button-primary.uk-active {
-  background-color: #D96D00;
-  color: #fff;
-}
-
-/* */
 .fixed {
   position: fixed;
   top: 0;
@@ -119,6 +84,7 @@ p,div,ul,li,a,span {
 .navbar__nav h1 a{
   padding: .8em;
   display: inline-block;
+  color: #ffffff;
 }
 
 .button {
