@@ -1,23 +1,11 @@
 <template>
   <div class="top">
     <ul class="movie-list">
-      <li class="movie-list__item">
-        <a class="movie-list__link" href="/#/talk">
-          <span>インターステラー</span>
+      <li class="movie-list__item" v-for="movie in movies" :key="movie.id">
+        <router-link :to="{ name: 'talk', params: { id: movie.movie_id }}" class="movie-list__link">
+          <span>{{movie.title}}</span>
           <span class="movie-list__icon" uk-icon="icon: chevron-right; ratio: 1.2" />
-        </a>
-      </li>
-      <li class="movie-list__item">
-        <a class="movie-list__link" href="">
-          <span>インターステラー</span>
-          <span class="movie-list__icon" uk-icon="icon: chevron-right; ratio: 1.2" />
-        </a>
-      </li>
-      <li class="movie-list__item">
-        <a class="movie-list__link" href="">
-          <span>インターステラー</span>
-          <span class="movie-list__icon" uk-icon="icon: chevron-right; ratio: 1.2" />
-        </a>
+        </router-link>
       </li>
     </ul>
   </div>
@@ -25,10 +13,24 @@
 
 <script>
 export default {
-  name: 'Top',
+  name: 'Talks',
   data () {
     return {
-      msg: 'hoihoi'
+      msg: 'hoihoi',
+      movies: [
+        {
+          title: "ショーシャンクの空に",
+          movie_id: "1000"
+        },
+        {
+          title: "インターステラー",
+          movie_id: "1001"
+        },
+        {
+          title: "ララランド",
+          movie_id: "1002"
+        }
+      ]
     }
   }
 }
@@ -36,7 +38,7 @@ export default {
 
 <style scoped>
 .movie-list{
-  margin-top: 0;
+  margin-top: 50px;
 }
 .movie-list__item{
   border-bottom: 1px solid #424242;

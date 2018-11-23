@@ -1,16 +1,27 @@
 <template>
   <div class="talk-wrapper">
     <div class="movie-wrapper">
-      <div class="movie">
-        <h2 class="movie__title">ショーシャンクの空に</h2>
-        <span @click="stopTimer" v-if="timerOn" class="button button--secondary">一時停止する</span>
+      <div class="movie" v-if="timerOn">
+        <!--<h2 class="movie__title">ショーシャンクの空に</h2>-->
+        <span @click="stopTimer" class="button button--secondary">一時停止する</span>
       </div>
-      <p v-if="!timerOn" class="movie-overview">{{ overview }}</p>
+      <!--<p v-if="!timerOn" class="movie-overview">{{ overview }}</p>-->
     </div>
     <div>
       <div class="talk__before-start" v-if="!timerOn">
-        <p>お持ちのデバイスで再生が始まったら、<br>「再生する」を押してください。</p>
-        <span @click="startTimer" class="button button--primary button--size-grande">再生する</span>
+        <p class="movie-thumb"><img :src='thumbURL' class="movie-thumb__image" /></p>
+        <div class="movie-info">
+          <div>
+            <h1 class="movie-info__title">{{$route.params.id}}ショーシャンクの空に</h1>
+            <p class="movie-info__comment-num">コメント：38</p>
+          </div>
+          <p><a href="https://eiga.com/rental/search/?name=ショーシャンクの空に&genre%5B%5D=all&site%5B%5D=all" class="movie-info__link">配信を検索</a></p>
+        </div>
+        <p class="movie-overview">{{ overview }}</p>
+        <div class="movie-play">
+          <p class="movie-play__description">お持ちのデバイスで再生が始まったら、<br>「一緒に観る」を押してください。</p>
+          <span @click="startTimer" class="button button--primary button--size-grande">一緒に観る</span>
+        </div>
       </div>
       <div v-else>
         <p class="play-time">
@@ -53,6 +64,7 @@
 import vueSlider from 'vue-slider-component'
 import axios from 'axios'
 export default {
+  name: 'Talk',
   components: {
     vueSlider
   },
@@ -68,6 +80,8 @@ export default {
       isBalloonTouched: false,
       comment: '',
       overview: '',
+      thumbURL: '',
+      //route_params_id: route.params.id,
       slider: {
         value: 0,
         height: 400,
@@ -85,6 +99,9 @@ export default {
   mounted () {
     this.talkData()
     this.getMovieThumbnail()
+    console.log(route)
+    //console.log(route.params.id)
+    //console.log(Number(route.params.id))
   },
   computed: {
     formatTime () {
@@ -168,17 +185,18 @@ export default {
       const that = this
       axios.get('https://api.themoviedb.org/3/movie/278?api_key=e78219babfc25468e5d1a08e84ac72ee&language=ja').then(function (response) {
         that.overview = response.data.overview
-        //console.log(response.data.overview)
+        that.thumbURL = 'https://image.tmdb.org/t/p/original/' + response.data.poster_path
+        console.log(response.data.overview)
       }).catch(function (error) {
         console.log(error)
       })
-
     },
     createTalk: function () {
       const that = this
+      //const movieId = route.params.id
       axios.post('http://localhost:3000/talk/create', {
         talk: {
-          film_id: '1',
+          movie_id: '3',
           time: this.sec,
           user_id: '1',
           faved: '0',
@@ -219,12 +237,85 @@ export default {
 .movie-overview {
   font-size: .9em;
 }
+.movie-thumb {
+  height: 200px;
+  overflow: hidden;
+  position: relative;
+  margin: 0 0 20px;
+}
+.movie-thumb__image {
+  position: absolute;
+  left: 0;
+  bottom: -200px;
+  width: 100%;
+}
+.movie-thumb:after {
+  display: block;
+  content: "";
+  width: 100%;
+  height: 100%;
+  top: 0;
+  position: absolute;
+  left: 0;
+  background: rgba(0,0,0,0.5);
+  /*background: linear-gradient(to bottom, rgba(0,0,0,0),rgba(0,0,0,100%));*/
+}
+.movie-info {
+  padding: 0 15px 15px;
+  text-align: left;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #444;
+  margin-bottom: 15px;
+}
+.movie-info__title {
+  font-size: 1rem;
+  color: #fff;
+}
+.movie-info__comment-num {
+  font-size: .8rem;
+}
+.movie-info__link {
+  font-size: .9em;
+}
+.movie-overview {
+  padding: 0 15px;
+  font-size: .8em;
+  line-height: 1.6;
+  text-align: left;
+  text-align: justify;
+  text-justify: inter-ideograph;
+  height: 6em;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 4;
+}
+.movie-play__description {
+  border-top: 1px solid #444;
+  font-size: .8em;
+  margin-top: 15px;
+  margin-bottom: 1em;
+  padding-top: 15px;
+  color: #aaa;
+  letter-spacing: .2em;
+}
+/*.movie-thumb:after {
+  display: block;
+  content: "";
+  width: 100%;
+  height: 50%;
+  top: 0;
+  position: absolute;
+  left: 0;
+  background: linear-gradient(to bottom, rgba(0,0,0,0),rgba(0,0,0,100%));
+}*/
 .talk__before-start {
   background: #2a2a2a;
   height: 100vh;
-  padding-top: 10em;
   text-align: center;
-  margin-top: 60px;
+  margin-top: 50px;
 }
 .play-time {
   text-align: center;

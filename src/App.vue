@@ -23,6 +23,8 @@ html {
 }
 body {
   margin: 0;
+  font-feature-settings: "palt";
+  letter-spacing: .05em;
 }
 a, a:hover {
   color: #fff;
@@ -38,6 +40,12 @@ h1 {
 }
 li {
   display: block;
+}
+p {
+  margin: 0;
+}
+p,div,ul,li,a,span {
+  box-sizing: border-box;
 }
 /* */
 .uk-button {
@@ -90,19 +98,20 @@ li {
   background: #000;
   color: #fff;
   font-weight: bold;
-  font-size: 1rem;
   display: flex;
   justify-content: space-between;
+  height: 50px;
 }
 
 .navbar__nav h1{
   font-size: 1.1rem;
   text-align: center;
   font-weight: bold;
+  line-height: 1.3;
 }
 
 .navbar__nav h1 a{
-  padding: 1em;
+  padding: .8em;
   display: inline-block;
 }
 
