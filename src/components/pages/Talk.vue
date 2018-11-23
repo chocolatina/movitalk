@@ -12,7 +12,7 @@
         <p class="movie-thumb"><img :src='thumbURL' class="movie-thumb__image" /></p>
         <div class="movie-info">
           <div>
-            <h1 class="movie-info__title">{{$route.params.id}}ショーシャンクの空に</h1>
+            <h1 class="movie-info__title">ショーシャンクの空に</h1>
             <p class="movie-info__comment-num">コメント：38</p>
           </div>
           <p><a href="https://eiga.com/rental/search/?name=ショーシャンクの空に&genre%5B%5D=all&site%5B%5D=all" class="movie-info__link">配信を検索</a></p>
@@ -99,9 +99,6 @@ export default {
   mounted () {
     this.talkData()
     this.getMovieThumbnail()
-    console.log(route)
-    //console.log(route.params.id)
-    //console.log(Number(route.params.id))
   },
   computed: {
     formatTime () {
@@ -193,10 +190,9 @@ export default {
     },
     createTalk: function () {
       const that = this
-      //const movieId = route.params.id
       axios.post('http://localhost:3000/talk/create', {
         talk: {
-          movie_id: '3',
+          movie_id: this.$route.params.id,
           time: this.sec,
           user_id: '1',
           faved: '0',

@@ -16,6 +16,12 @@
     <router-view/>
   </div>
 </template>
+
+<script>
+  export default {
+    name: 'app',
+  }
+</script>
 <style>
 html {
   background: #2a2a2a;
